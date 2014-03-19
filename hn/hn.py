@@ -190,6 +190,27 @@ class HN(object):
                 item = leader.find_all('td')
                 yield User(item[1].text,'', item[2].text, item[3].text)
 
+    def get_user(self, username):
+        soup = get_soup('user?id=%s' % username)
+        print soup
+        table = soup.find_all('table')[2].find_all('tr')
+        userid = table[0].text
+        date_created = table[1].text
+        karma = table[2].text
+        avg = table[3].text
+        about = table[4].text
+        submissions = self.get_stories('submitted?id=%s' % username)
+        comments = table[6].text #self._get_user_comments(get_soup('threads?id=%s' % username)) 
+        return User(userid, date_created, karma, avg, about, submissions, comments)
+
+    def _get_user_comments(self, soup):
+        # Find the More link - Different from _get_next_page
+        more =  soup.findChildren('table')[len(table) - 2].findChildren(['tr'])[-1].find('a').get('href').lstrip('//')
+        while more != None:
+            print more
+            new_soup = get_soup(more)
+
+
 class Story(object):
     """
     Story class represents one single story on HN
@@ -394,11 +415,14 @@ class User(object):
     Represents a User on HN
     """
 
-    def __init__(self, username, date_created,karma, avg):
+    def __init__(self, username, date_created,karma, avg, about, submissions, comments):
         self.username = username
         self.date_created = date_created
         self.karma = karma
         self.avg = avg
+        self.about = about
+        self.submissions = submissions
+        self.comments = comments
 
     def __repr__(self):
         return '{0} {1} {2}'.format(self.username, self.karma, self.avg)
