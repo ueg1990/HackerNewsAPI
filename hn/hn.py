@@ -188,7 +188,8 @@ class HN(object):
                 return
             if not leader.text == '':
                 item = leader.find_all('td')
-                yield User(item[1].text,'', item[2].text, item[3].text)
+                user = self.get_user(item[1].text) 
+                yield  user #User(item[1].text,'', item[2].text, item[3].text)
 
     def get_user(self, username):
         soup = get_soup('user?id=%s' % username)
