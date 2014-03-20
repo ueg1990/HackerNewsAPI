@@ -193,7 +193,6 @@ class HN(object):
 
     def get_user(self, username):
         soup = get_soup('user?id=%s' % username)
-        print soup
         table = soup.find_all('table')[2].find_all('tr')
         userid = table[0].text
         date_created = table[1].text

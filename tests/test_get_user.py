@@ -2,7 +2,7 @@ import unittest
 import sys
 from hn import HN
 
-class TestGetLeaders(unittest.TestCase):
+class TestGetUser(unittest.TestCase):
 	def setUp(self):
 		# check py version
 		#self.PY2 = sys.version_info[0] == 2
