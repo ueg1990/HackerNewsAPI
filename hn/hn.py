@@ -192,23 +192,28 @@ class HN(object):
                 yield  user #User(item[1].text,'', item[2].text, item[3].text)
 
     def get_user(self, username):
-        soup = get_soup('user?id=%s' % username)
-        table = soup.find_all('table')[2].find_all('tr')
-        userid = table[0].text
-        date_created = table[1].text
-        karma = table[2].text
-        avg = table[3].text
-        about = table[4].text
-        submissions = self.get_stories('submitted?id=%s' % username)
-        comments = table[6].text #self._get_user_comments(get_soup('threads?id=%s' % username)) 
-        return User(userid, date_created, karma, avg, about, submissions, comments)
+        try:
 
-    def _get_user_comments(self, soup):
-        # Find the More link - Different from _get_next_page
-        more =  soup.findChildren('table')[len(table) - 2].findChildren(['tr'])[-1].find('a').get('href').lstrip('//')
-        while more != None:
-            print more
-            new_soup = get_soup(more)
+            soup = get_soup('user?id=%s' % username)
+            table = soup.find_all('table')[2].find_all('tr')
+            userid = table[0].text
+            date_created = table[1].text
+            karma = table[2].text
+            avg = table[3].text
+            about = table[4].text
+            submissions = self.get_stories('submitted?id=%s' % username)
+            comments = table[6].text #self._get_user_comments(get_soup('threads?id=%s' % username)) 
+            return User(userid, date_created, karma, avg, about, submissions, comments)
+        except:
+
+            raise Exception(soup) 
+
+    # def _get_user_comments(self, soup):
+    #     # Find the More link - Different from _get_next_page
+    #     more =  soup.findChildren('table')[len(table) - 2].findChildren(['tr'])[-1].find('a').get('href').lstrip('//')
+    #     while more != None:
+    #         print more
+    #         new_soup = get_soup(more)
 
 
 class Story(object):
