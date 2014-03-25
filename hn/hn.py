@@ -189,11 +189,9 @@ class HN(object):
             if not leader.text == '':
                 item = leader.find_all('td')
                 user = self.get_user(item[1].text) 
-                yield  user #User(item[1].text,'', item[2].text, item[3].text)
+                yield  user
 
     def get_user(self, username):
-        try:
-
             soup = get_soup('user?id=%s' % username)
             table = soup.find_all('table')[2].find_all('tr')
             userid = table[0].text
@@ -202,19 +200,7 @@ class HN(object):
             avg = table[3].text
             about = table[4].text
             submissions = self.get_stories('submitted?id=%s' % username)
-            comments = table[6].text #self._get_user_comments(get_soup('threads?id=%s' % username)) 
-            return User(userid, date_created, karma, avg, about, submissions, comments)
-        except:
-
-            raise Exception(soup) 
-
-    # def _get_user_comments(self, soup):
-    #     # Find the More link - Different from _get_next_page
-    #     more =  soup.findChildren('table')[len(table) - 2].findChildren(['tr'])[-1].find('a').get('href').lstrip('//')
-    #     while more != None:
-    #         print more
-    #         new_soup = get_soup(more)
-
+            return User(userid, date_created, karma, avg, about, submissions)
 
 class Story(object):
     """
@@ -420,15 +406,14 @@ class User(object):
     Represents a User on HN
     """
 
-    def __init__(self, username, date_created,karma, avg, about, submissions, comments):
+    def __init__(self, username, date_created,karma, avg, about, submissions):
         self.username = username
         self.date_created = date_created
         self.karma = karma
         self.avg = avg
         self.about = about
         self.submissions = submissions
-        self.comments = comments
-
+        
     def __repr__(self):
         return '{0} {1} {2}'.format(self.username, self.karma, self.avg)
 

@@ -12,8 +12,8 @@ class TestGetUser(unittest.TestCase):
 		pass
 
 	def test_get_user(self):
-		self.hn.get_user('wozniacki')
-		# wozniacki
+		test_user = self.hn.get_user('karangoeluw')
+		self.assertEqual(test_user.username, 'karangoeluw')
 
 if __name__ == '__main__':
      unittest.main()
