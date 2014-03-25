@@ -196,11 +196,11 @@ class HN(object):
     def get_user(self, username):
             soup = get_soup('user?id=%s' % username)
             table = soup.find_all('table')[2].find_all('tr')
-            userid = table[0].text
-            date_created = table[1].text
-            karma = table[2].text
-            avg = table[3].text
-            about = table[4].text
+            userid = table[0].text.split(':')[1]
+            date_created = table[1].text.split(':')[1]
+            karma = table[2].text.split(':')[1]
+            avg = table[3].text.split(':')[1]
+            about = table[4].text.split(':')[1]
             submissions = self.get_stories('submitted?id=%s' % username)
             return User(userid, date_created, karma, avg, about, submissions)
 
