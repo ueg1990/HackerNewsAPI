@@ -161,9 +161,11 @@ class HN(object):
         self.more = story_type
         # while we still have more stories to find
         while stories_found < limit:
+            time.sleep(3)
             soup = get_soup(page=self.more) # get current page soup
             all_rows = self._get_zipped_rows(soup)
             stories = self._build_story(all_rows) # get a list of stories on current page
+            # content = requests.get('%s/%s' % (BASE_URL, page)).text
             self.more = self._get_next_page(soup) # move to next page
 
             for story in stories:
@@ -413,7 +415,7 @@ class User(object):
         self.avg = avg
         self.about = about
         self.submissions = submissions
-        
+
     def __repr__(self):
         return '{0} {1} {2}'.format(self.username, self.karma, self.avg)
 
